@@ -53,7 +53,6 @@ class BaseImportGMD:
                                       ("COLLECTION_TEXTURE", "[Collection]_[Texture]",
                                        "Collection name and Diffuse Texture name"),
                                       ("TEXTURE", "[Texture]", "Diffuse Texture name"),
-                                      ("SHADER_TEXTURE", "[SHADER] [Texture]", "Shader and Diffuse Texture name"),
                                   ],
                                   default="COLLECTION_TEXTURE")
 
@@ -105,7 +104,6 @@ class BaseImportGMD:
             "COLLECTION_SHADER": MaterialNamingType.Collection_Shader,
             "COLLECTION_TEXTURE": MaterialNamingType.Collection_DiffuseTexture,
             "TEXTURE": MaterialNamingType.DiffuseTexture,
-            "SHADER_TEXTURE": MaterialNamingType.Shader_DiffuseTexture,
         }
 
         return GMDSceneCreatorConfig(
