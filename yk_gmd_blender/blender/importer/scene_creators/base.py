@@ -31,6 +31,8 @@ class MaterialNamingType(Enum):
     Collection_DiffuseTexture = 1
     # Just DiffuseTexture name, for @Haruka-Chan
     DiffuseTexture = 2
+    # BeamNG
+    Shader_DiffuseTexture = 3
 
 
 @dataclass(frozen=True)
@@ -162,6 +164,8 @@ class BaseGMDSceneCreator(abc.ABC):
             material_name = f"{collection.name_full}_{gmd_attribute_set.texture_diffuse or 'no_tex'}"
         elif self.config.material_naming_convention == MaterialNamingType.DiffuseTexture:
             material_name = f"{gmd_attribute_set.texture_diffuse or 'no_tex'}"
+        elif self.config.material_naming_convention == MaterialNamingType.Shader_DiffuseTexture:
+            material_name = f"{gmd_attribute_set.shader.name}_{gmd_attribute_set.texture_diffuse or 'no_tex'}"
         else:
             self.error.fatal(
                 f"config.material_naming_convention not valid - "
