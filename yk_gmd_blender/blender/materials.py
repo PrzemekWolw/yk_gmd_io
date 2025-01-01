@@ -271,6 +271,8 @@ def set_yakuza_shader_material_from_attributeset(material: bpy.types.Material, y
     material.yakuza_data.material_origin_type = attribute_set.material.origin_version.value
     material.yakuza_data.material_json = json.dumps(vars(attribute_set.material.origin_data))
 
+    print('THIS MATERIAL: ' + str(material.yakuza_data.shader_name) + ' EXPECTS: ' + str(material.yakuza_data.cached_expected_uv_layers))
+
     # TODO detect if yakuza 8 is used, because that apparently uses roughness instead of glossiness (notyoshi)
 
     # Set the skin shader to 1 if the shader is a skin shader
@@ -328,6 +330,7 @@ def set_yakuza_shader_material_from_attributeset(material: bpy.types.Material, y
         image_node.hide = True
         material.node_tree.links.new(image_node.outputs["Color"], set_into)
         next_image_y -= 100
+        image_node.label = set_into.name
         return image_node, next_image_y
 
     # Create the diffuse texture
@@ -345,8 +348,10 @@ def set_yakuza_shader_material_from_attributeset(material: bpy.types.Material, y
                 material.node_tree.links.new(diffuse_tex.outputs["Alpha"], yakuza_inputs["Diffuse Alpha"])
                 if "_c" in attribute_set.shader.name:
                     material.blend_method = "HASHED"
+                    diffuse_tex.label = diffuse_tex.label + '_clip'
                 else:
                     material.blend_method = "BLEND"
+                    diffuse_tex.label = diffuse_tex.label + '_blend'
                 material.shadow_method = "NONE"
 
     # Attach the other textures.
