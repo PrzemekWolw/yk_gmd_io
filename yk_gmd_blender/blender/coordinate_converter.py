@@ -12,6 +12,10 @@ def transform_position_blender_to_gmd(pos: Vector) -> Vector:
 
 
 def transform_rotation_gmd_to_blender(rot: Quaternion) -> Quaternion:
+    # Unused rotations are stored as 0,0,0,0. Blender normalizes that to (0,1,0,0),
+    # a 180 degree turn around X, which flips every child.
+    if rot.magnitude < 1e-8:
+        return Quaternion((1.0, 0.0, 0.0, 0.0))
     return Quaternion((rot.w, -rot.x, rot.z, rot.y))
 
 
@@ -21,7 +25,7 @@ def transform_rotation_blender_to_gmd(rot: Quaternion) -> Quaternion:
 
 def transform_gmd_to_blender(pos: Vector, rot: Quaternion, scale: Vector) -> Tuple[Vector, Quaternion, Vector]:
     pos = Vector((-pos.x, pos.z, pos.y))
-    rot = Quaternion((rot.w, -rot.x, rot.z, rot.y))
+    rot = transform_rotation_gmd_to_blender(rot)
     scale = scale.xzy
 
     return pos, rot, scale
